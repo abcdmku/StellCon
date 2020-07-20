@@ -7,6 +7,5 @@ public class Resource : ScriptableObject
 {
     public string resourceName;
     public int quantity;
-    public Color resourceColor;
 
 }

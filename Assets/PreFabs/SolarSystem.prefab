@@ -325,6 +325,72 @@ MonoBehaviour:
   metal: 0
   terrain: 0
   randomRotate: 0
+  resourceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0015258789
+      value: 0.0161983
+      inSlope: 0.8927423
+      outSlope: 0.8927423
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.090076335
+    - serializedVersion: 3
+      time: 0.028152242
+      value: 0.15204003
+      inSlope: 0.48311952
+      outSlope: 0.48311952
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2.7429473
+      outSlope: 2.7429473
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.01832062
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  fleetCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.0017232448
+      value: 0.20283082
+      inSlope: 0.93359774
+      outSlope: 0.93359774
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.30920506
+    - serializedVersion: 3
+      time: 0.9984741
+      value: 1.0047188
+      inSlope: 1.1586235
+      outSlope: 1.1586235
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.055141855
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &3413236427457618924
 MonoBehaviour:
   m_ObjectHideFlags: 0
