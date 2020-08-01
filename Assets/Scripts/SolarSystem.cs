@@ -140,9 +140,9 @@ public class SolarSystem : MonoBehaviour, IGameComponent
 
         while (thisSolarSystemsFleets != 0 || AttackingSolarSystemsFleets != 0)
         {
-            int roll = UnityEngine.Random.Range(0, 3);
-            if (roll == 1) UpdateFleet(fleet--);
-              if (roll == 2) SolarSystemAtacking.UpdateFleet(SolarSystemAtacking.fleet--);
+       //    int roll = UnityEngine.Random.Range(0, 3);
+       //     if (roll == 1) UpdateFleet(fleet--);
+           //   if (roll == 2) SolarSystemAtacking.UpdateFleet(SolarSystemAtacking.fleet--);
            // yield return new WaitForSeconds(5);
 
 
