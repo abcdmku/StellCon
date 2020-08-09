@@ -88,9 +88,9 @@
     <Compile Include="Assets\Scripts\HexMap.cs" />
     <Compile Include="Assets\Scripts\IGameComponent.cs" />
     <Compile Include="Assets\Scripts\IRenderable.cs" />
+    <Compile Include="Assets\Scripts\MainPlayer.cs" />
     <Compile Include="Assets\Scripts\MakePowerUp.cs" />
     <Compile Include="Assets\Scripts\Model\PlayerJsonData.cs" />
-    <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\PlayerJsonController.cs" />
     <Compile Include="Assets\Scripts\PowerUps.cs" />
     <Compile Include="Assets\Scripts\RenderHandler.cs" />
@@ -98,7 +98,9 @@
     <Compile Include="Assets\Scripts\Resource.cs" />
     <Compile Include="Assets\Scripts\ResourceCollection.cs" />
     <Compile Include="Assets\Scripts\SolarSystem.cs" />
-    <Compile Include="Assets\Scripts\ZoomPan.cs" />
+    <Compile Include="Assets\Scripts\SolarSystemEventHandler.cs" />
+    <Compile Include="Assets\Scripts\View\ZoomPan.cs" />
+    <Compile Include="Assets\TigerForge\EasyEventManager\EasyEventManager.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />

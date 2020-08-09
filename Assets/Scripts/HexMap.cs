@@ -6,8 +6,8 @@ public class HexMap : MonoBehaviour
 {
 
     public GameObject HexPrefab;
-    public int NumRows = 16;
-    public int NumCols = 32;
+    public int NumRows = 5;
+    public int NumCols = 5;
 
 
     void Start()

@@ -84,8 +84,10 @@ public class SolarSystem : MonoBehaviour, IGameComponent
 
     public void ChangeOwnership(int playerID)
     {
-        string spriteName = "Tile-" + playerID.ToString();
-        RenderSprite("Tile", spriteName);
+        //string spriteName = "Tile-" + playerID.ToString();
+        // RenderSprite("Tile", spriteName);
+
+
     }
 
     public void StellarBomb()

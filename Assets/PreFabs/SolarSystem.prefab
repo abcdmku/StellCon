@@ -412,6 +412,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  DefenseNet: {fileID: 0}
   resources:
   - {fileID: 11400000, guid: 95493ca75db3dce4c813d956df5d08b3, type: 2}
   - {fileID: 11400000, guid: f672b0b02a847d7459fe7a16297d0854, type: 2}
