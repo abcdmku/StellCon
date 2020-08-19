@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TigerForge;
+using UnityEngine.EventSystems;
 
 public class ClickEvents : MonoBehaviour
 {
@@ -12,8 +13,10 @@ public class ClickEvents : MonoBehaviour
     }
     void OnMouseDown()
     {
-        EventManager.SetDataGroup("SOLARSYSTEM_CLICKED", gameObject.name);
-        EventManager.EmitEvent("SOLARSYSTEM_CLICKED");
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            EventManager.EmitEvent("SOLARSYSTEM_CLICKED", gameObject);
+        }
     }
 
     void OnMouseEnter()

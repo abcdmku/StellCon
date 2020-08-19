@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
 using System.Reflection;
+using TigerForge;
 using UnityEngine;
 
 
 public class SolarSystem : MonoBehaviour, IGameComponent
 {
-    public int hexID;
     public int fleet;
     public int playerID;
     public int tier;
@@ -21,12 +22,34 @@ public class SolarSystem : MonoBehaviour, IGameComponent
     public AnimationCurve tempPlayerCurve;
 
     public GameObject DefenseNet;
-
-
-
     public Resource[] resources;
 
+    public void Awake()
+    {
+        GenerateSolarSystemTier();
+        GenerateSolarSystemResources();
+        GenerateSolarSystemFleet();
 
+        ChangeOwnership(Convert.ToInt16(tempPlayerCurve.Evaluate(4 + UnityEngine.Random.value * 4))); // testing player colors
+
+    }
+
+    void Start()
+    {
+      //  Listeners.Add("SOLARSYSTEM_CLICKED", SolarSystemClicked);
+      //  Listeners.StartListening("SOLARSYSTEM_CLICKED");
+    }
+
+    void Update()
+    {
+
+    }
+
+    public void OnClick()
+    {
+        Debug.Log(this.name + " Clicked");
+        EventManager.EmitEvent("SOLARSYSTEM_CLICKED", gameObject);
+    }
 
     float CurveWeightedRandom(AnimationCurve curve, int maxNumber)
     {
@@ -82,12 +105,11 @@ public class SolarSystem : MonoBehaviour, IGameComponent
         UpdateFleet(generatedFleet);
     }
 
-    public void ChangeOwnership(int playerID)
+    public void ChangeOwnership(int newPlayerID)
     {
+        playerID = newPlayerID;
         //string spriteName = "Tile-" + playerID.ToString();
         // RenderSprite("Tile", spriteName);
-
-
     }
 
     public void StellarBomb()
@@ -154,16 +176,99 @@ public class SolarSystem : MonoBehaviour, IGameComponent
 
     }
 
-
-    public void Awake()
+    //works well to 6
+    public List<GameObject> GetNeighbors(int range, bool fillCenter)
     {
-        GenerateSolarSystemTier();
-        GenerateSolarSystemResources();
-        GenerateSolarSystemFleet();
+        List<GameObject> GOList = new List<GameObject>();
+        GameObject[] AllSystems = GameObject.FindGameObjectsWithTag("SolarSystemTag");
+        Vector3 currentPosition = transform.position;
 
-        ChangeOwnership(Convert.ToInt16(tempPlayerCurve.Evaluate(4+UnityEngine.Random.value * 4))); // testing player colors
+        double innerRange = Math.Floor(Math.Pow(range * 1.7, 2) + Math.Pow(((0.577677009 * (range % 2)) * 1.7),2));
+        double outerRange = Math.Ceiling(Math.Pow(range * 1.982051, 2));
 
+
+        if (fillCenter)
+            innerRange = 0;
+
+        foreach (GameObject system in AllSystems)
+        {
+            Vector3 TargetSystemCoords = system.transform.position - currentPosition;
+            system.transform.Find("Coords").gameObject.GetComponentInChildren<TextMesh>().text = TargetSystemCoords.sqrMagnitude.ToString();
+            if (TargetSystemCoords.sqrMagnitude < outerRange && TargetSystemCoords.sqrMagnitude > innerRange)
+            {
+                GOList.Add(system);
+                Debug.Log(TargetSystemCoords.sqrMagnitude);
+            }
+        }
+        return GOList;
     }
+
+
+    // not tested
+    public bool IsNeighbor(GameObject originSystem)
+    {
+        bool isNeighbor = false;
+
+        Vector3 currentPosition = transform.position;
+        Vector3 TargetSystemCoords = originSystem.transform.position - currentPosition;
+        float distance = TargetSystemCoords.sqrMagnitude;
+        if (distance < 4 && distance > 0)
+            isNeighbor = true;
+
+       return isNeighbor;
+    }
+
+    // not tested
+    public bool IsAttackable(GameObject originSystem)
+    {
+        bool isAttackable = false;
+
+        bool isNeighbor = IsNeighbor(originSystem);
+        bool isDifferentPlayer = this.playerID != originSystem.GetComponent<SolarSystem>().playerID;
+        if (isNeighbor && isDifferentPlayer)
+            isAttackable = true;
+
+        return isAttackable;
+    }
+
+    // not finished
+    public List<GameObject> GetValidFleetMovements()
+    {
+        List<GameObject> GOList = new List<GameObject>();
+
+
+        return GOList;
+    }
+
+
+
+    // not tested
+    public GameObject GetClosestSystem()
+    {
+        GameObject bestTarget = new GameObject();
+        float shortestDistance = Mathf.Infinity;
+
+        GameObject[] AllSystems = GameObject.FindGameObjectsWithTag("SolarSystemTag");
+        Vector3 currentPosition = transform.position;
+
+        foreach (GameObject system in AllSystems)
+        {
+            Vector3 TargetSystemCoords = system.transform.position - currentPosition;
+
+            if (TargetSystemCoords.sqrMagnitude < shortestDistance)
+            {
+                bestTarget = system;
+                shortestDistance = TargetSystemCoords.sqrMagnitude;
+            }
+
+        }
+
+        return bestTarget;
+    }
+
+
+     
+
 
     /*
     public void writeText(object info, string textBoxName)
@@ -177,6 +282,7 @@ public class SolarSystem : MonoBehaviour, IGameComponent
         }
     }
     */
+
 
     public void GetInfo()
     {

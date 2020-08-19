@@ -875,7 +875,7 @@ namespace TigerForge
         /// <summary>
         /// Start the listening to all the Events in the Group.
         /// </summary>
-        public void StartListening()
+        public void StartListening(string v)
         {
             foreach (SEvent g in group)
             {

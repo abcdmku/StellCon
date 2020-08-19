@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IGameComponent 
+public interface  IGameComponent 
 {
     void GetInfo();
+
 }
