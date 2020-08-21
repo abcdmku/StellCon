@@ -13,11 +13,15 @@ public interface IDeployable
     void InitialReaction();
 }
 
+//   ███████╗████████╗██████╗  █████╗ ████████╗███████╗ ██████╗██╗   ██╗    ██████╗  █████╗ ████████╗████████╗███████╗██████╗ ███╗   ██╗
+//   ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝██╔════╝██╔════╝╚██╗ ██╔╝    ██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██╔════╝██╔══██╗████╗  ██║
+//   ███████╗   ██║   ██████╔╝███████║   ██║   █████╗  ██║  ███╗╚████╔╝     ██████╔╝███████║   ██║      ██║   █████╗  ██████╔╝██╔██╗ ██║
+//   ╚════██║   ██║   ██╔══██╗██╔══██║   ██║   ██╔══╝  ██║   ██║ ╚██╔╝      ██╔═══╝ ██╔══██║   ██║      ██║   ██╔══╝  ██╔══██╗██║╚██╗██║
+//   ███████║   ██║   ██║  ██║██║  ██║   ██║   ███████╗╚██████╔╝  ██║       ██║     ██║  ██║   ██║      ██║   ███████╗██║  ██║██║ ╚████║
+//   ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝ ╚═════╝   ╚═╝       ╚═╝     ╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝
 
 public class StellarBomb : MonoBehaviour, IDeployable // TODO: move these out to their own file
 {
-
-
     public void InitialReaction()
     {
         List<GameObject> ValidSystem = ValidLocations();
@@ -66,8 +70,6 @@ public class StellarBomb : MonoBehaviour, IDeployable // TODO: move these out to
         }
     }
 }
-
-
 
 public class DefenceNet : MonoBehaviour, IDeployable
 {
