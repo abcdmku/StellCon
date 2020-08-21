@@ -31,16 +31,13 @@ public class PlayerJsonController : MonoBehaviour
             GameObject.Find("PlayerInfo").GetComponent<UnityEngine.UI.Text>().text = "Player Info:";
             foreach (PlayerJsonData playerinfo in PlayerInfoList)
             {
-                {
-                    var props = playerinfo.GetType().GetFields();
-                    var sb = new System.Text.StringBuilder();
-                    foreach (var p in props)
-                    {
-                        sb.AppendLine(p.Name + ": " + p.GetValue(playerinfo));
-                    }
-                     sb.ToString();
-                    GameObject.Find("PlayerInfo").GetComponent<UnityEngine.UI.Text>().text += "\n" + sb;
-                }
+                var props = playerinfo.GetType().GetFields();
+                var sb = new System.Text.StringBuilder();
+                foreach (var p in props)
+                    sb.AppendLine(p.Name + ": " + p.GetValue(playerinfo));
+
+                sb.ToString();
+                GameObject.Find("PlayerInfo").GetComponent<UnityEngine.UI.Text>().text += "\n" + sb;
             }
         }
     }

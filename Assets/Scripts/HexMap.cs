@@ -16,14 +16,14 @@ public class HexMap : MonoBehaviour
     public int systemsPlaced;
     List<String> nameList = new List<String>();
 
+    
 
     void Start()
     {
-        //   RandomizePlacement();
-        //  GenerateFullMap();
+        // GenerateFullMap();
         PlacePlayers();
         RandomizePlacement();
-
+        GenerateSystemProperties();
     }
 
     void GenerateFullMap()
@@ -32,7 +32,6 @@ public class HexMap : MonoBehaviour
         {
             for (int row = 0; row < NumRows; row++)
             {
-
                 Hex solarSystem = new Hex(column, row);
 
                 GameObject hexGo = (GameObject)Instantiate(
@@ -40,7 +39,7 @@ public class HexMap : MonoBehaviour
                     solarSystem.Position(),
                     Quaternion.identity, 
                     this.transform
-                    );
+                );
                 hexGo.name = "SolarSystem (" + solarSystem.Q + ", " + solarSystem.R + ")";
                 hexGo.transform.Find("Coords").gameObject.GetComponentInChildren<TextMesh>().text = string.Format("{0},{1},{2}", solarSystem.Q, solarSystem.R, solarSystem.S);
             }
@@ -52,6 +51,7 @@ public class HexMap : MonoBehaviour
         RemoveAllSystems();
         PlacePlayers();
         RandomizePlacement();
+        GenerateSystemProperties();
     }
 
     GameObject PlaceSolarSystem(int x, int y, bool highlight)
@@ -91,8 +91,7 @@ public class HexMap : MonoBehaviour
             PlaceSolarSystem(x, y, false);
             PlaceSolarSystemAround(x, y, 3, 100);
 
-           i++;
-            
+            i++;  
         }
         Debug.Log("i = " + i);
     }
@@ -103,7 +102,6 @@ public class HexMap : MonoBehaviour
         {
             for (int yy = -range; yy <= range; yy++)
             {
-
                 float finalProb = probability / ((Math.Abs(xx) * Math.Abs(yy)+.01f));
 
                 if (UnityEngine.Random.Range(0, 100) <= finalProb)
@@ -175,15 +173,12 @@ public class HexMap : MonoBehaviour
                     Vector3 coordsDiff = system.transform.position - currentPosition;
                     float distance = coordsDiff.sqrMagnitude;
 
-                   // Debug.Log(distance);
-
                     if (distance < farDist && distance > closeDist)
                         isValid = true;
 
                     if (distance < closeDist)
                         isTooClose = true;
                 }
-
 
                 if (isValid && !isTooClose || PlayerSystems.Count == 0)
                 {
@@ -192,16 +187,38 @@ public class HexMap : MonoBehaviour
                 } else
                 {
                     RemoveSystem(CurrentSystem);
-
                 }
             }
         }
+    }
 
-        foreach (GameObject system in PlayerSystems)
+    public void GenerateSystemProperties()
+    {
+        List<GameObject> AllSystems = GetAllSystems();
+
+        foreach (GameObject system in AllSystems)
+            system.GetComponent<SolarSystem>().Generate();
+    }
+
+
+    public void AttackSolarSystem(GameObject DefendingSystem, List<GameObject> AttackingSystems)
+    {
+        int thisSolarSystemsFleets = Convert.ToInt16(this.transform.Find("Fleets").gameObject.GetComponentInChildren<TextMesh>().text);
+        int AttackingSolarSystemsFleets = Convert.ToInt16(DefendingSystem.transform.Find("Fleets").gameObject.GetComponentInChildren<TextMesh>().text);
+
+        print("this Fleets: " + thisSolarSystemsFleets);
+        print("other Fleets: " + AttackingSolarSystemsFleets);
+
+        while (thisSolarSystemsFleets != 0 || AttackingSolarSystemsFleets != 0)
         {
-          //   Debug.Log(system);
-        }
+            // int roll = UnityEngine.Random.Range(0, 3);
+            // if (roll == 1) UpdateFleet(fleet--);
+            // if (roll == 2) SolarSystemAtacking.UpdateFleet(SolarSystemAtacking.fleet--);
+            // yield return new WaitForSeconds(5);
 
+
+        }
+        // yield return new WaitForSeconds(0.5f);
     }
 
 
@@ -209,10 +226,11 @@ public class HexMap : MonoBehaviour
     public void GetIslands()
     {
         //recursive
-        //has neighbors
-        //get closes system
-        //connect
-        //once done check again
+        // make a checked list
+        // list of all systems 
+        // for each system get neighbors and add to list
+        // remove duplicate values on list, and check new neighbors
+        // might need a new class for a list of islands (gameobject lists)
     }
 
 
@@ -233,22 +251,18 @@ public class HexMap : MonoBehaviour
         List<GameObject> GOList = new List<GameObject>();
 
         foreach (GameObject system in AllSystems)
-        {
             if (system.GetComponent<SolarSystem>().playerID == playerID)
-            {
                 GOList.Add(system);
-            }
-        }
+
         return GOList;
     }
 
     public void RemoveAllSystems()
     {
         List<GameObject> AllSystems = GetAllSystems();
+
         foreach (GameObject system in AllSystems)
-        {
             RemoveSystem(system);
-        }
     }
 
 

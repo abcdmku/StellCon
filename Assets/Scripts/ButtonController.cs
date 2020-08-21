@@ -13,7 +13,7 @@ public class ButtonController : MonoBehaviour
         DeployControler DeployControllerGO = GameObject.Find("GameController").GetComponent<DeployControler>();
         DeployControllerGO.HandlePowerUpType(this.ButtonDeploy);
 
-        DeployControllerGO.Deploy();
+        DeployControllerGO.InitialReaction();
     }
 
 }

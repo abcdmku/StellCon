@@ -248,6 +248,7 @@ MonoBehaviour:
   randomRotate: 0
   hasDefenceNet: 0
   hasBeenTerraformed: 0
+  highlighted: 0
   tierCurve:
     serializedVersion: 2
     m_Curve:
@@ -261,35 +262,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 2.0085838
-      value: 0.4992811
-      inSlope: 0.11944481
-      outSlope: 0.11944481
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.15675695
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 2.8970127
-      value: 1.5083222
-      inSlope: 1.2929566
-      outSlope: 1.2929566
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.14799532
-      outWeight: 0.22563797
-    - serializedVersion: 3
-      time: 2.983543
-      value: 2.0092363
-      inSlope: 1.188814
-      outSlope: 1.188814
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.16096322
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 3.0039673
-      value: 3.0050964
+      time: 2.9975452
+      value: 2.9864626
       inSlope: 2
       outSlope: 2
       tangentMode: 0
@@ -396,13 +370,22 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 6.5682845
-      value: 0.36254483
-      inSlope: 0.11078238
-      outSlope: 0.11078238
+      time: 6.028663
+      value: 0.5367629
+      inSlope: 0.40374556
+      outSlope: 0.40374556
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.17731725
+      inWeight: 0.049780868
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 8.100145
+      value: 6.081295
+      inSlope: 2.8221338
+      outSlope: 2.8221338
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.060236063
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 9.033066
@@ -476,7 +459,7 @@ GameObject:
   - component: {fileID: 935502365020500485}
   - component: {fileID: 7151360596379005317}
   m_Layer: 0
-  m_Name: Sprite Light 2D
+  m_Name: Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -512,8 +495,8 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1.33
-  m_LightVolumeOpacity: 0
+  m_Intensity: 0
+  m_LightVolumeOpacity: 0.4
   m_ApplyToSortingLayers: 00000000
   m_LightCookieSprite: {fileID: 21300000, guid: df8ef95663325864891dc9ac128ef826,
     type: 3}

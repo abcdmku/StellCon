@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class State
+public class State // Not used yet
 {
     public Action ActiveAction;
     public Action OnEnterAction;

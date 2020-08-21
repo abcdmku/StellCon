@@ -12,7 +12,7 @@ public class DeployControler : MonoBehaviour
         DefenceNet,
         Terraform,
         Wormhole,
-        Fleet
+        PlaceFleet
     }
 
 
@@ -57,8 +57,8 @@ public class DeployControler : MonoBehaviour
                 iDeployable = gameObject.AddComponent<Wormhole>();
                 break;
 
-            case DeployType.Fleet:
-                iDeployable = gameObject.AddComponent<Fleet>();
+            case DeployType.PlaceFleet:
+                iDeployable = gameObject.AddComponent<PlaceFleet>();
                 break;
         }
     }
@@ -72,6 +72,12 @@ public class DeployControler : MonoBehaviour
     {
         iDeployable.ValidLocations();
     }
+
+    public void InitialReaction()
+    {
+        iDeployable.InitialReaction();
+    }
+    
 
     void Start()
     {

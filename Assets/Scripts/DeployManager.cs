@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,11 +10,46 @@ public interface IDeployable
 {
     void Deploy();
     List<GameObject> ValidLocations();
+    void InitialReaction();
 }
 
-public class StellarBomb : MonoBehaviour, IDeployable
+
+public class StellarBomb : MonoBehaviour, IDeployable // TODO: move these out to their own file
 {
-    HexMap hexMap;
+
+
+    public void InitialReaction()
+    {
+        List<GameObject> ValidSystem = ValidLocations();
+        foreach (GameObject system in ValidSystem)
+        {
+            system.GetComponent<SolarSystem>().highlighted = true;
+        }
+
+    }
+
+    public List<GameObject> ValidLocations()
+    {
+        HexMap hexMap = GameObject.Find("HexMap").GetComponent<HexMap>();
+        PlayerData mainPlayer = GameObject.Find("MainPlayer").GetComponent<PlayerData>();
+
+        List<GameObject> MainPlayerSystems = hexMap.GetSystemsByPlayerID(mainPlayer.playerID);
+        List<GameObject> Neighbors = new List<GameObject>();
+
+        foreach (GameObject system in MainPlayerSystems)
+        {
+            Neighbors.AddRange(system.GetComponent<SolarSystem>().GetNeighbors(1, false));
+        }
+        Neighbors = Neighbors.Distinct().ToList();
+
+        List<GameObject> AllSystems = hexMap.GetAllSystems();
+        List<GameObject> EnemySystems = AllSystems.Except(MainPlayerSystems).ToList();
+
+        List<GameObject> ValidSystem = EnemySystems.Intersect(Neighbors).ToList();
+
+        return ValidSystem;
+    }
+
     public void Deploy()
     {
         PlayerData mainPlayer = GameObject.Find("MainPlayer").GetComponent<PlayerData>();
@@ -29,17 +65,21 @@ public class StellarBomb : MonoBehaviour, IDeployable
             Debug.Log("<color=yellow>" + metal + " metal is not enough to deploy a StellarBomb</color>");
         }
     }
-    public List<GameObject> ValidLocations()
-    {
-        PlayerData mainPlayer = GameObject.Find("MainPlayer").GetComponent<PlayerData>();
-        List<GameObject> ValidSystem = hexMap.GetSystemsByPlayerID(mainPlayer.playerID);
-
-        return ValidSystem;
-    }
 }
+
+
 
 public class DefenceNet : MonoBehaviour, IDeployable
 {
+    public void InitialReaction()
+    {
+        List<GameObject> ValidSystem = ValidLocations();
+        foreach (GameObject system in ValidSystem)
+        {
+            system.GetComponent<SolarSystem>().highlighted = true;
+        }
+    }
+
     public void Deploy()
     {
         PlayerData mainPlayer = GameObject.Find("MainPlayer").GetComponent<PlayerData>();
@@ -57,13 +97,25 @@ public class DefenceNet : MonoBehaviour, IDeployable
     }
     public List<GameObject> ValidLocations()
     {
-        List<GameObject> GOList = new List<GameObject>();
-        return GOList;
+        HexMap hexMap = GameObject.Find("HexMap").GetComponent<HexMap>();
+
+        PlayerData mainPlayer = GameObject.Find("MainPlayer").GetComponent<PlayerData>();
+        List<GameObject> ValidSystem = hexMap.GetSystemsByPlayerID(mainPlayer.playerID);
+        return ValidSystem;
     }
 }
 
 public class Terraform : MonoBehaviour, IDeployable
 {
+    public void InitialReaction()
+    {
+        List<GameObject> ValidSystem = ValidLocations();
+        foreach (GameObject system in ValidSystem)
+        {
+            system.GetComponent<SolarSystem>().highlighted = true;
+        }
+    }
+
     public void Deploy()
     {
         PlayerData mainPlayer = GameObject.Find("MainPlayer").GetComponent<PlayerData>();
@@ -81,13 +133,25 @@ public class Terraform : MonoBehaviour, IDeployable
     }
     public List<GameObject> ValidLocations()
     {
-        List<GameObject> GOList = new List<GameObject>();
-        return GOList;
+        HexMap hexMap = GameObject.Find("HexMap").GetComponent<HexMap>();
+
+        PlayerData mainPlayer = GameObject.Find("MainPlayer").GetComponent<PlayerData>();
+        List<GameObject> ValidSystem = hexMap.GetSystemsByPlayerID(mainPlayer.playerID);
+        return ValidSystem;
     }
 }
 
 public class Wormhole : MonoBehaviour, IDeployable
 {
+    public void InitialReaction()
+    {
+        List<GameObject> ValidSystem = ValidLocations();
+        foreach (GameObject system in ValidSystem)
+        {
+            system.GetComponent<SolarSystem>().highlighted = true;
+        }
+    }
+
     public void Deploy()
     {
         PlayerData mainPlayer = GameObject.Find("MainPlayer").GetComponent<PlayerData>();
@@ -105,13 +169,25 @@ public class Wormhole : MonoBehaviour, IDeployable
     }
     public List<GameObject> ValidLocations()
     {
-        List<GameObject> GOList = new List<GameObject>();
-        return GOList;
+        HexMap hexMap = GameObject.Find("HexMap").GetComponent<HexMap>();
+
+        PlayerData mainPlayer = GameObject.Find("MainPlayer").GetComponent<PlayerData>();
+        List<GameObject> ValidSystem = hexMap.GetSystemsByPlayerID(mainPlayer.playerID);
+        return ValidSystem;
     }
 }
 
-public class Fleet : MonoBehaviour, IDeployable
+public class PlaceFleet : MonoBehaviour, IDeployable
 {
+    public void InitialReaction()
+    {
+        List<GameObject> ValidSystem = ValidLocations();
+        foreach (GameObject system in ValidSystem)
+        {
+            system.GetComponent<SolarSystem>().highlighted = true;
+        }
+    }
+
     public void Deploy()
     {
         // origin = system.name
@@ -120,8 +196,11 @@ public class Fleet : MonoBehaviour, IDeployable
     }
     public List<GameObject> ValidLocations()
     {
-        List<GameObject> GOList = new List<GameObject>();
-        return GOList;
+        HexMap hexMap = GameObject.Find("HexMap").GetComponent<HexMap>();
+
+        PlayerData mainPlayer = GameObject.Find("MainPlayer").GetComponent<PlayerData>();
+        List<GameObject> ValidSystem = hexMap.GetSystemsByPlayerID(mainPlayer.playerID);
+        return ValidSystem;
     }
 }
 

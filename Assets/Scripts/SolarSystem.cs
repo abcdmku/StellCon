@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
+using System.Linq;
 using System.Reflection;
 using TigerForge;
 using UnityEngine;
-
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class SolarSystem : MonoBehaviour, IGameComponent
 {
@@ -15,6 +16,7 @@ public class SolarSystem : MonoBehaviour, IGameComponent
     public float randomRotate;
     public bool hasDefenceNet = false;
     public bool hasBeenTerraformed = false;
+    public bool highlighted = false;
 
     public AnimationCurve tierCurve;
     public AnimationCurve resourceCurve;
@@ -24,25 +26,25 @@ public class SolarSystem : MonoBehaviour, IGameComponent
     public GameObject DefenseNet;
     public Resource[] resources;
 
-    public void Awake()
+    public void Generate()
     {
         GenerateSolarSystemTier();
         GenerateSolarSystemResources();
         GenerateSolarSystemFleet();
 
-        ChangeOwnership(Convert.ToInt16(tempPlayerCurve.Evaluate(4 + UnityEngine.Random.value * 4))); // testing player colors
-
+        playerID = Convert.ToInt16(tempPlayerCurve.Evaluate(4 + UnityEngine.Random.value * 4)); // make random player colors
     }
 
     void Start()
     {
-      //  Listeners.Add("SOLARSYSTEM_CLICKED", SolarSystemClicked);
-      //  Listeners.StartListening("SOLARSYSTEM_CLICKED");
+
     }
 
-    void Update()
+    void Update() // change to on new turn 
     {
-
+        UpdateFleet(fleet);
+        ChangeColor();
+        HighlightSystem(highlighted);
     }
 
     public void OnClick()
@@ -73,7 +75,12 @@ public class SolarSystem : MonoBehaviour, IGameComponent
 
     public void GenerateSolarSystemTier()
     {
-        float tierF = tierCurve.Evaluate(UnityEngine.Random.value * 3);
+        float neighbors = 1; // GetNeighbors(1,false).Count; 
+        // TODO: find a different way to generate high tiers in remote locations. checking neighbors for every system is laggy
+
+        neighbors = (6 - neighbors) / 2;
+
+        float tierF = tierCurve.Evaluate(UnityEngine.Random.value * neighbors);
         tier = Convert.ToInt16(tierF);
 
         randomRotate = UnityEngine.Random.Range(1, 360);
@@ -105,11 +112,19 @@ public class SolarSystem : MonoBehaviour, IGameComponent
         UpdateFleet(generatedFleet);
     }
 
-    public void ChangeOwnership(int newPlayerID)
+    public void ChangeColor()
     {
-        playerID = newPlayerID;
-        //string spriteName = "Tile-" + playerID.ToString();
-        // RenderSprite("Tile", spriteName);
+        SystemColors systemColors = GameObject.Find("GameController").GetComponent<SystemColors>();
+        Color32 newColor = systemColors.colorList.ElementAt(playerID);
+        this.transform.Find("Tile").GetComponent<SpriteRenderer>().color = newColor;
+    }
+
+    public void HighlightSystem(bool highlighted)
+    {
+        if (highlighted)
+            this.transform.Find("Highlight").GetComponent<Light2D>().intensity = 1f;
+        else
+            this.transform.Find("Highlight").GetComponent<Light2D>().intensity = 0;
     }
 
     public void StellarBomb()
@@ -123,8 +138,6 @@ public class SolarSystem : MonoBehaviour, IGameComponent
             Destroy(DefenseNetGO);
         }
     }
-
-
 
     public void DefenceNet()
     {
@@ -150,33 +163,11 @@ public class SolarSystem : MonoBehaviour, IGameComponent
 
     public void WormHole()
     {
-        // need to implement player movement first
+        // display purple ring around system or something
     }
 
-    public void AttackSolarSystem(string solarSystemAtackingName)
-    {
-        GameObject SolarSystemAtacking = GameObject.Find(solarSystemAtackingName);
-        int thisSolarSystemsFleets = Convert.ToInt16(this.transform.Find("Fleets").gameObject.GetComponentInChildren<TextMesh>().text);
-        int AttackingSolarSystemsFleets = Convert.ToInt16(SolarSystemAtacking.transform.Find("Fleets").gameObject.GetComponentInChildren<TextMesh>().text);
 
-        print("this Fleets: " + thisSolarSystemsFleets);
-        print("other Fleets: " + AttackingSolarSystemsFleets);
-
-        while (thisSolarSystemsFleets != 0 || AttackingSolarSystemsFleets != 0)
-        {
-       //    int roll = UnityEngine.Random.Range(0, 3);
-       //     if (roll == 1) UpdateFleet(fleet--);
-           //   if (roll == 2) SolarSystemAtacking.UpdateFleet(SolarSystemAtacking.fleet--);
-           // yield return new WaitForSeconds(5);
-
-
-        }
-
-        // yield return new WaitForSeconds(0.5f);
-
-    }
-
-    //works well to 6
+    //works well to 6 neighbors
     public List<GameObject> GetNeighbors(int range, bool fillCenter)
     {
         List<GameObject> GOList = new List<GameObject>();
@@ -186,7 +177,6 @@ public class SolarSystem : MonoBehaviour, IGameComponent
         double innerRange = Math.Floor(Math.Pow(range * 1.7, 2) + Math.Pow(((0.577677009 * (range % 2)) * 1.7),2));
         double outerRange = Math.Ceiling(Math.Pow(range * 1.982051, 2));
 
-
         if (fillCenter)
             innerRange = 0;
 
@@ -195,10 +185,7 @@ public class SolarSystem : MonoBehaviour, IGameComponent
             Vector3 TargetSystemCoords = system.transform.position - currentPosition;
             system.transform.Find("Coords").gameObject.GetComponentInChildren<TextMesh>().text = TargetSystemCoords.sqrMagnitude.ToString();
             if (TargetSystemCoords.sqrMagnitude < outerRange && TargetSystemCoords.sqrMagnitude > innerRange)
-            {
                 GOList.Add(system);
-                Debug.Log(TargetSystemCoords.sqrMagnitude);
-            }
         }
         return GOList;
     }
@@ -218,7 +205,6 @@ public class SolarSystem : MonoBehaviour, IGameComponent
        return isNeighbor;
     }
 
-    // not tested
     public bool IsAttackable(GameObject originSystem)
     {
         bool isAttackable = false;
@@ -231,18 +217,6 @@ public class SolarSystem : MonoBehaviour, IGameComponent
         return isAttackable;
     }
 
-    // not finished
-    public List<GameObject> GetValidFleetMovements()
-    {
-        List<GameObject> GOList = new List<GameObject>();
-
-
-        return GOList;
-    }
-
-
-
-    // not tested
     public GameObject GetClosestSystem()
     {
         GameObject bestTarget = new GameObject();
@@ -262,27 +236,8 @@ public class SolarSystem : MonoBehaviour, IGameComponent
             }
 
         }
-
         return bestTarget;
     }
-
-
-     
-
-
-    /*
-    public void writeText(object info, string textBoxName)
-    {
-
-        Type ObjectType = info.GetType();
-        GameObject.Find(textBoxName).GetComponent<UnityEngine.UI.Text>().text = "Feilds:";
-        foreach (ObjectType infoElement in info)
-        {
-            GameObject.Find(textBoxName).GetComponent<UnityEngine.UI.Text>().text += "\n" + infoElement.Name;
-        }
-    }
-    */
-
 
     public void GetInfo()
     {

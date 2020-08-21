@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using TigerForge;
 using UnityEditorInternal;
 using UnityEngine;
+using System.Linq;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class GameManager : MonoBehaviour
     EventsGroup Listeners = new EventsGroup();
     public int range = 1;
     public PlayerData[] Players;
+
 
 
     // Start is called before the first frame update
@@ -34,20 +37,14 @@ public class GameManager : MonoBehaviour
         if (eventData != null)
         {
             GameObject SolarSystemGO = (GameObject)eventData;
-           
-            
-                Debug.Log("<color=green>SS Clicked: " + SolarSystemGO.name + "</color>\n");
-               // SolarSystemGO.transform.Find("Tile").GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+            SolarSystem System = SolarSystemGO.GetComponent<SolarSystem>();
+            List<GameObject> Systems = System.GetNeighbors(range, false);
 
-                List<GameObject> Systems = SolarSystemGO.GetComponent<SolarSystem>().GetNeighbors(range, false);
-                
+            Debug.Log("<color=green>SS Clicked: " + SolarSystemGO.name + "</color>\n");
+            int playerID = System.playerID;
+
             foreach (GameObject system in Systems)
-            {
-                system.transform.Find("Tile").GetComponent<SpriteRenderer>().color = new Color(1, 0, 1, 1);
-
-                //Debug.Log(system.name);
-            }
-            
+                system.GetComponent<SolarSystem>().playerID = playerID;            
         }
     }
 
